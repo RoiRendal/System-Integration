@@ -40,6 +40,7 @@ export const createUser = async (userProfile, email, password) => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
 
+    /* 
     const response = await fetch (
         'https://ais-simulated-legacy.onrender.com/api/students', {
             method: "POST",
@@ -50,6 +51,7 @@ export const createUser = async (userProfile, email, password) => {
         }
     );
     const result = await response.json;
+    */
 
     const [newUser] = await pool.query (
         "INSERT INTO tbluser (email, password) VALUES (?, ?)",
