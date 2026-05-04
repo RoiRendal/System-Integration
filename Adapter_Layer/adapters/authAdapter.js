@@ -1,19 +1,27 @@
 export const create = async (profile) => {
     const transformedProfile = {
-        name: profile.firstName + " " + profile.lastName,
+        name: `${profile.firstName} ${profile.lastName}`.trim(),
         birthdate: profile.dob,
-        "program": profile.course + " " + profile.major,
-        "status": profile.status
-    }
+        address: profile.address,
+        program: `${profile.course} ${profile.major}`.trim(),
+        studentStatus: profile.status,
+    };
 
-    const response = await fetch (
-        `https://ais-simulated-legacy.onrender.com/api/students`, {
+    const response = await fetch(
+        "https://ais-simulated-legacy.onrender.com/api/students",
+        {
             method: "POST",
-            headers: {  
-                'Content-Type': 'application/json'
+            headers: {
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(transformedProfile)
+            body: JSON.stringify(transformedProfile),
         }
     );
-    return await response.json();
+    const data = await response.json();
+    if (!response.ok) {
+        const err = new Error(data.error || data.message || "AIS student registration failed");
+        err.statusCode = response.status;
+        throw err;
+    }
+    return data;
 };

@@ -12,9 +12,10 @@ export const register = async (req, res) => {
         });
     } catch(e) {
         console.error(e);
-        res.status(500).json({
+        const status = e.statusCode >= 400 && e.statusCode < 600 ? e.statusCode : 500;
+        res.status(status).json({
             success: false,
-            message: 'Internal Server Error'
+            message: e.statusCode ? e.message : "Internal Server Error",
         });
     }
 };

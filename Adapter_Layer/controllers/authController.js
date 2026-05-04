@@ -1,10 +1,10 @@
 import * as AuthService from "../services/authService.js";
 
 export const registerStudent = async (req, res) => {
-    const {firstName, lastName, dob, course, major, status} = req.body;
+    const {firstName, lastName, dob, address, course, major, status} = req.body;
     try {
         const studentProfile = {
-            firstName, lastName, dob, course, major, status
+            firstName, lastName, dob, address, course, major, status
         };
 
         const result = await AuthService.registerStudent(studentProfile);
@@ -13,9 +13,10 @@ export const registerStudent = async (req, res) => {
             message: result
         });
     } catch (error) {
-        res.status(500).json({
+        const status = error.statusCode >= 400 ? error.statusCode : 500;
+        res.status(status).json({
             success: false,
-            message: "An error occurred while registering the student"
+            message: error.message || "An error occurred while registering the student",
         });
     }
 };

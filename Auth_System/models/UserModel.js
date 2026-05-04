@@ -65,6 +65,14 @@ export const createUser = async (userProfile, email, password) => {
 
     const result = await response.json();
 
+    if (!response.ok) {
+        const error = new Error(
+            result.message || "Adapter or AIS registration failed"
+        );
+        error.statusCode = response.status;
+        throw error;
+    }
+
     const [newUser] = await pool.query (
         "INSERT INTO tblStudent (email, password) VALUES (?, ?)",
         [email, hashedPassword]
