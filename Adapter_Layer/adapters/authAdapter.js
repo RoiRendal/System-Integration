@@ -1,3 +1,5 @@
+import { getAisStudentsBaseUrl } from "../util/aisEndpoints.js";
+
 export const create = async (profile) => {
     const transformedProfile = {
         name: `${profile.firstName} ${profile.lastName}`.trim(),
@@ -7,16 +9,13 @@ export const create = async (profile) => {
         studentStatus: profile.status,
     };
 
-    const response = await fetch(
-        "https://ais-simulated-legacy.onrender.com/api/students",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(transformedProfile),
-        }
-    );
+    const response = await fetch(getAisStudentsBaseUrl(), {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(transformedProfile),
+    });
     const data = await response.json();
     if (!response.ok) {
         const err = new Error(data.error || data.message || "AIS student registration failed");
