@@ -1,7 +1,7 @@
 import mysql from "mysql2/promise.js"
 
 const pool = mysql.createPool({
-    port: process.env.HOST,
+    port: process.env.PORT,
     user: process.env.USER,
     password: "",
     database: process.env.DATABASE
